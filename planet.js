@@ -15,8 +15,7 @@ class Planet
         this.distanceToSun = props.distanceToSun / distanceScale;
         this.phi = props.phi || 0;
 
-        this.force = props.force || createVector(0, 0);
-        // this.trail = [];
+        this.image = eval(this.name.toLowerCase())
     }
     
     display = function()
@@ -29,24 +28,14 @@ class Planet
             {
                 noFill()
                 ellipse(center.x + offset.x, center.y + offset.y, mass.distanceToSun * 2, mass.distanceToSun * 2)   
-                
             }
 
             fill(mass.color)
             // ellipse(mass.pos.x, mass.pos.y, mass.radius, mass.radius)       
 
-
-            // if (mass.trail.length > 5) 
-            // {
-            //     for (let i = 0; i < mass.trail.length - 1; i++) 
-            //     {
-            //         line(mass.trail[i].x + offset.x, mass.trail[i].y  + offset.y, mass.trail[i + 1].x, mass.trail[i + 1].y)
-            //     }
-            // }
-
             let x = (mass.pos.x - (mass.radius / 2)) + offset.x;
             let y = (mass.pos.y - (mass.radius / 2)) + offset.y;
-            image(eval(mass.name.toLowerCase()), x, y, mass.radius, mass.radius);
+            image(this.image, x, y, mass.radius, mass.radius);
             fill(255)
             textAlign(CENTER)
             text(mass.name, x, y - 5)
@@ -58,8 +47,11 @@ class Planet
         {
             let twoPI = 2 * Math.PI;
             let inside = ((twoPI / this.daysInAYear) * frameCount);
-            this.pos.x = -1 * Math.cos(inside + this.phi) * this.distanceToSun + center.x;
-            this.pos.y = Math.sin(inside + this.phi) * this.distanceToSun + center.y;
+            let x = -1 * Math.cos((inside) * timeScale + this.phi) * this.distanceToSun;
+            let y = Math.sin((inside) * timeScale + this.phi) * this.distanceToSun;
+            let oldPosition = this.pos.copy()
+            let newPosition = createVector(x, y).add(center)
+            this.pos.add(newPosition.sub(oldPosition))
 
             // this.pos.add(offset)
         }
@@ -73,44 +65,6 @@ class Planet
         }
 
         
-    }
-
-    netForce = function()
-    {
-        this.force = createVector(0, 0);
-
-        planets.forEach(mass => 
-        {
-            let massPos = mass.pos;
-            let massMass = mass.mass;
-            
-            let gm = massMass  * g;
-            let r = p5.Vector.dist(this.pos, massPos);
-
-            let count = true;
-            if (r < 0.5) 
-            {
-                count = false;
-            }
-            if (r < 30) 
-            {
-                r = 30
-            }
-            let rSquared = Math.pow(r,2);
-            let force = gm / rSquared;
-        
-            let theta = p5.Vector.sub(massPos, this.pos).heading();
-            let forceX = force * cos(theta);
-            let forceY = force * sin(theta);
-        
-            let forceVector = createVector(forceX, forceY);
-        
-            if (count) 
-            {
-                this.force.add(forceVector);
-            }
-            
-        });
     }
   
 }

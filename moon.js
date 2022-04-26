@@ -11,9 +11,6 @@ class Moon
         this.daysInAYear = props.daysInAYear / timeScale;
         this.distanceToPlanet = props.distanceToPlanet / distanceScale;
         this.phi = props.phi || 0;
-
-        this.force = props.force || createVector(0, 0);
-        // this.trail = [];
     }
 
     display = function()
@@ -67,44 +64,5 @@ class Moon
         this.pos.y = Math.sin(inside + this.phi) * this.distanceToPlanet + parentPlanetPos.y;
 
         // this.pos.add(offset)
-    }
-
-    netForce = function()
-    {
-        this.force = createVector(0, 0);
-
-        planets.forEach(mass => 
-        {
-            let massPos = mass.pos;
-            let massMass = mass.mass;
-            
-            let gm = massMass  * g;
-            let r = p5.Vector.dist(this.pos, massPos);
-
-            let count = true;
-            if (r < 0.5) 
-            {
-                count = false;
-            }
-            if (r < 30) 
-            {
-                r = 30
-            }
-            let rSquared = Math.pow(r,2);
-            let force = gm / rSquared;
-        
-            let theta = p5.Vector.sub(massPos, this.pos).heading();
-            let forceX = force * cos(theta);
-            let forceY = force * sin(theta);
-        
-            let forceVector = createVector(forceX, forceY);
-        
-            if (count) 
-            {
-                this.force.add(forceVector);
-            }
-            
-        });
-    }
-  
+    }  
 }
