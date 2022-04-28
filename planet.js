@@ -41,30 +41,15 @@ class Planet
             text(mass.name, x, y - 5)
         pop()
     }
+    
     move = function()
     {
-        if (this.type == "Planet") 
-        {
-            let twoPI = 2 * Math.PI;
-            let inside = ((twoPI / this.daysInAYear) * frameCount);
-            let x = -1 * Math.cos((inside) * timeScale + this.phi) * this.distanceToSun;
-            let y = Math.sin((inside) * timeScale + this.phi) * this.distanceToSun;
-            let oldPosition = this.pos.copy()
-            let newPosition = createVector(x, y).add(center)
-            this.pos.add(newPosition.sub(oldPosition))
-
-            // this.pos.add(offset)
-        }
-        else if(this.name != "Sun")
-        {
-            // this.trail.push(this.pos.copy());
-            this.pos.add(this.vel);
-            this.vel.add(this.acc);
-
-            this.acc = this.force.div(this.mass)
-        }
-
-        
+        let twoPI = 2 * Math.PI;
+        let inside = ((twoPI / this.daysInAYear) * frameCount);
+        let x = -1 * Math.cos((inside) * timeScale + this.phi) * this.distanceToSun;
+        let y = Math.sin((inside) * timeScale + this.phi) * this.distanceToSun;
+        let oldPosition = this.pos.copy()
+        let newPosition = createVector(x, y).add(center)
+        this.pos.add(newPosition.sub(oldPosition))   
     }
-  
 }

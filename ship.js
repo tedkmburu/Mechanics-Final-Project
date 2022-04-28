@@ -4,7 +4,7 @@ function createShip()
 
     ships.push(new Ship({
         pos: p5.Vector.fromAngle(1 * Math.PI * 2, (227.9 * Math.pow(10, 6)) / distanceScale).add(center),
-        // vel: p5.Vector.fromAngle(30, 2285714285 / distanceScale),
+        vel: p5.Vector.fromAngle(30, (2285714285 * timeScale) / distanceScale),
         name: "SpaceShip",
         radius: 224 * 2,
         mass: 149685.482,
@@ -70,7 +70,7 @@ class Ship
         this.pos.add(this.vel) 
         
 
-        // console.log(this.acc);
+        // console.log(this.pos);
     }
 
     netForce = function()
